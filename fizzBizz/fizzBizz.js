@@ -1,11 +1,24 @@
 function text(num) {
-    if (num % 3 == 0) {
-        console.log("'fizz'");
-    } else if (num % 5 == 0) {
-        console.log("'bizz'");
-    } else if ((num % 3 == 0) && (num % 5 == 0)) {
-        console.log("'fizzbizz'");
+    if ((num % 3 === 0) && (num % 5 === 0)) {
+        return 'fizzbizz';
+    } else if (num % 5 === 0) {
+        return 'bizz';
+    } else if (num % 3 === 0) {
+        return 'fizz';
+    } else {
+        return '';
     }
+}
+
+function fizzbuzz(word) {
+    let word = '';
+    if (num % 3 === 0) {
+        word = word.concat('fizz');
+    }
+    if (num % 5 === 0) {
+        word = word.concat('bizz');
+    }
+    return word;
 }
 
 console.log(text(3));

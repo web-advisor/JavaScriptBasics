@@ -5,4 +5,3 @@
 * Please take a look at my [Portfolio]() for my furthur projects 
 * That's All Folks !
 ---
-![Myself]()

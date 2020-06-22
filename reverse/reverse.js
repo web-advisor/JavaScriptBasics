@@ -4,5 +4,6 @@ function reverseString(word) {
 }
 
 
+
 console.log(reverseString("malayalam"));
 console.log(reverseString("javaScript"));

@@ -10,29 +10,71 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-    <title>BootStrap</title>
+    <style type="text/css">
+        .container {
+            margin-top: 20px;
+        }
+
+        #Calculations {
+            font-weight: 900;
+        }
+
+        #solution {
+            display: none;
+        }
+    </style>
+    <title>DDA Algo</title>
 </head>
 
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-md-2">
-                One of five columns
-            </div>
-            <div class="col-md-2">
-                One of five columns
-            </div>
-            <div class="col-md-2">
-                One of five columns
-            </div>
-            <div class="col-md-2">
-                One of five columns
-            </div>
-            <div class="col-md-2">
-                One of five columns
-            </div>
+        <h1 class="display-2">DDA Line Drawing Algorithm</h1>
+    </div>
+    <div class="container">
+        <form method="get">
+            <p style="font-size:125%;font-weight: 700;"> Enter the Starting Pixel Coordiante of the Line :
+                (x<sub>0</sub>,y<sub>0</sub>) (
+                <input type="number" min="0" id="x0" width="10px">
+                <input type="number" min="0" id="y0" width="10px">
+                )
+            </p>
+
+            <p style="font-size:125%;font-weight: 700;"> Enter the Ending Pixel Coordiante of the Line :
+                (x<sub>1</sub>,y<sub>1</sub>)&nbsp;&nbsp; (
+                <input type="number" min="0" id="x1" width="10px">
+                <input type="number" min="0" id="y1" width="10px">
+                )
+            </p>
+
+            <input type="button" id="submit" value="Submit" class="btn btn-primary">
+
+        </form>
+    </div>
+    <div class="container">
+        <div class="row" id="Calculations">
         </div>
     </div>
+
+
+    <div class="container" id="solution">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Iteration</th>
+                    <th scope="col">X</th>
+                    <th scope="col">Y</th>
+                    <th scope="col">Round(X)</th>
+                    <th scope="col">Round(Y)</th>
+                </tr>
+            </thead>
+            <tbody id="sol">
+
+            </tbody>
+        </table>
+        <button id="reload" class="btn btn-primary"> Clear ? </button>
+    </div>
+    
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
         crossorigin="anonymous"></script>
@@ -42,6 +84,58 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
         integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
         crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+        document.getElementById("submit").onclick = function () {
+            let x0 = document.getElementById("x0").value;
+            let x1 = document.getElementById("x1").value;
+            let y0 = document.getElementById("y0").value;
+            let y1 = document.getElementById("y1").value;
+
+            let dx = x1 - x0;
+            let dy = y1 - y0;
+            document.getElementById("Calculations").innerHTML = "<div class='col-md-2'> Change in X <br> <span style='color:#0000ff;'>" + dx + "</span></div>";
+            document.getElementById("Calculations").innerHTML += "<div class='col-md-2'>Change in Y <br> <span style='color:#0000ff;'>" + dy + "</span></div>";
+            let steps = Math.abs((Math.abs(dx) > Math.abs(dy)) ? dx : dy);
+            document.getElementById("Calculations").innerHTML += "<div class='col-md-2'>Number Of Steps <br> <span style='color:#0000ff;'>" + steps + "</span></div>";
+            let xinc = dx / steps;
+            let yinc = dy / steps;
+            let strx = (xinc > 0) ? "Increase" : "Decrease";
+            let stry = (yinc > 0) ? "Increase" : "Decrease";
+            document.getElementById("Calculations").innerHTML += "<div class='col-md-2'>" + strx + " in X <br> <span style='color:#0000ff;'>" + xinc.toFixed(4) + "</span></div>";
+            document.getElementById("Calculations").innerHTML += "<div class='col-md-2'>" + stry + " in Y <br> <span style='color:#0000ff;'>" + yinc.toFixed(4) + "</span></div>";
+
+            let solution = document.getElementById("solution");
+            let sol = document.getElementById("sol");
+
+            x0=Number(x0);
+            y0=Number(y0);
+            xinc=Number(xinc);
+            yinc=Number(yinc);
+            
+            solution.style.display = 'block';
+            sol.innerHTML = "<tr><th scope='row'>" + 0 + "</th><td>" + x0 + "</td><td>" + y0 + "</td><td>" + Math.round(x0) + "</td><td>" + Math.round(y0) + "</td></tr>";
+
+            if(Math.abs(dx) < Math.abs(dy)){
+                for (var i = 1; i <= steps; i++) {
+                    x0 = x0 + xinc;
+                    y0 = y0 + yinc;
+                    sol.innerHTML += "<tr><th scope='row'>" + i + "</th><td>" + x0.toFixed(4) + "</td><td>" + y0 + "</td><td>" + Math.round(x0) + "</td><td>" + Math.round(y0) + "</td></tr>";
+                }
+            }else{
+                for (var i = 1; i <= steps; i++) {
+                    x0 = x0 + xinc;
+                    y0 = y0 + yinc;
+                    sol.innerHTML += "<tr><th scope='row'>" + i + "</th><td>" + x0 + "</td><td>" + y0.toFixed(4) + "</td><td>" + Math.round(x0) + "</td><td>" + Math.round(y0) + "</td></tr>";
+                }
+            }
+
+            document.getElementById("reload").onclick=function(){
+                window.location.reload();
+            }
+
+        }
+    </script>
 </body>
 
 </html>

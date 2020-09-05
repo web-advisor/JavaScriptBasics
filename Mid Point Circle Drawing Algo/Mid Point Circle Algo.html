@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <style type="text/css">
+        .container {
+            margin-top: 20px;
+        }
+
+        #Calculations {
+            font-weight: 900;
+        }
+
+        #solution {
+            display: none;
+        }
+
+        #solution2 {
+            display: none;
+        }
+    </style>
+    <title>MidPoint Circle Algo</title>
+    <!-- Including jQuery and jQuery UI -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- If javaScript fails -->
+    <noscript>Your Browser doesn't support javaScript or it has blocked the javaScript.</noscript>
+
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="display-4">Mid Point Circle Drawing Algorithm</h1>
+    </div>
+    <div class="container">
+        <form method="get">
+            <p style="font-size:125%;font-weight: 700;"> Enter the Radius of the Circle :
+                <br> R (
+                <input type="number" min="0" id="r" width="10px">
+                )
+            </p>
+
+            <input type="button" id="submit" value="Submit" class="btn btn-primary">
+
+        </form>
+    </div>
+
+    <div class="container">
+        <div class="jumbotron" id="popUp" style="display:none;">
+            <h1 class="display-4">Octants<button type="button" class="close" data-dismiss="jumbotron" id="butt" aria-label="Close"><span aria-hidden="true">&times;</span></button></h1>
+            <div class="text-center">
+                <img src="Midpoint-Circle-Drawing-Algorithm.png" class="rounded img-fluid" alt="I(P,Q) , II(Q,P) , III(Q,-P) , IV(P,-Q) , V(-P,-Q) , VI(-Q,-P) , VII(-Q,P) , VIII(-P,Q)">
+            </div>
+            <hr class="my-4">
+            <p class="lead">
+                <a class="btn btn-success btn-lg" href="https://www.tutorialandexample.com/midpoint-circle-drawing-algorithm/" role="button">Learn more</a>
+            </p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row" id="Calculations">
+        </div>
+    </div>
+
+
+    <div class="container" id="solution">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Iteration</th>
+                    <th scope="col">Octant II <br>(x,y)</th>
+                    <th scope="col">Octant III <br>(-x,y)</th>
+                    <th scope="col">Octant VI <br>(-x,-y)</th>
+                    <th scope="col">Octant VII <br>(x,-y)</th>
+                    <th scope="col">P</th>
+                </tr>
+            </thead>
+            <tbody id="sol">
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="container" id="solution2">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Iteration</th>
+                    <th scope="col">Octant I <br>(y,x)</th>
+                    <th scope="col">Octant IV <br>(-y,x)</th>
+                    <th scope="col">Octant V <br>(-y,-x)</th>
+                    <th scope="col">Octant VIII <br>(y,-x)</th>
+                    <th scope="col">P</th>
+                </tr>
+            </thead>
+            <tbody id="sol2">
+
+            </tbody>
+        </table>
+        <button class="btn btn-primary" id="reload" style="margin-bottom:20px;"> Check Another ? </button>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+        document.getElementById("submit").onclick = function () {
+            let r = document.getElementById("r").value;
+
+            document.getElementById("reload").onclick = function () {
+                window.location.reload();
+            }
+
+            if (r == 0 || r == "") {
+                document.getElementById("Calculations").innerHTML += '<div class="col-md-12"><div class="alert alert-danger" role="alert"><strong>Radius has to have some Magnitude !</strong><button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button></div></div>';
+                document.getElementById("Calculations").innerHTML += '<div class="col-md-2"><button class="btn btn-primary" id="reload" style="margin-bottom:20px;"> Check Another ? </button></div>';
+                return;
+            }
+
+            let solution = document.getElementById("solution");
+            let sol = document.getElementById("sol");
+            let solution2 = document.getElementById("solution2");
+            let sol2 = document.getElementById("sol2");
+            solution.style.display = 'block';
+            solution2.style.display = 'block';
+
+            let x = 0;
+            let y = r;
+            let p0 = (5/4) - r;
+
+            sol.innerHTML = "<tr><th scope='row'>" + 0 + "</th><td> ( " + x + " , " + y + " ) </td><td> ( " + (-1) *x + " , " + y + " ) </td><td> ( " + (-1) * x + " , " + (-1) * y + " ) </td><td> ( " + x + " , " + (-1) *y + " ) </td><td><input type='hidden' id='p0' value='" + Math.round(p0) + "'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='5/4 - rad'>" + Math.round(p0) + "</button></td></tr>";
+            sol2.innerHTML = "<tr><th scope='row'>" + 0 + "</th><td> ( " + y + " , " + x + " ) </td><td> ( " + (-1) *y + " , " + x + " ) </td><td> ( " + (-1) * y + " , " + (-1) * x + " ) </td><td> ( " + y + " , " + (-1) *x + " ) </td><td><input type='hidden' id='p0' value='" + Math.round(p0) + "'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='5/4 - rad'>" + Math.round(p0) + "</button></td></tr>";
+
+            for (var i = 1; ; i++) {
+                let ji = 0;
+                let j2 = 0;
+                let point = Number(document.getElementById("p" + (i - 1)).value);
+
+                if (parseInt(point) < 0) {
+                    j1 = 2*(x) + 3;
+                    let P = point + j1;
+                    x++;
+                    sol.innerHTML += "<tr><th scope='row'>" + i + "</th><td> ( " + x + " , " + y + " ) </td><td> ( " + (-1) *x + " , " + y + " ) </td><td> ( " + (-1) * x + " , " + (-1) * y + " ) </td><td> ( " + x + " , " + (-1) *y + " ) </td><td><input type='hidden' id='p" + i + "' value='" + P + "'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='P" + (i - 1) + " + 2 * (x) + 1 &#8757; P" + (i - 1) + " < 0'>" + P + "</button></td></tr>";
+                    sol2.innerHTML += "<tr><th scope='row'>" + i + "</th><td> ( " + y + " , " + x + " ) </td><td> ( " + (-1) *y + " , " + x + " ) </td><td> ( " + (-1) * y + " , " + (-1) * x + " ) </td><td> ( " + y + " , " + (-1) *x + " ) </td><td><input type='hidden' id='p" + i + "' value='" + P + "'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='P" + (i - 1) + " + 2 * (x) + 1 &#8757; P" + (i - 1) + " < 0'>" + P + "</button></td></tr>";
+                } else {
+                    j2 = 2*(x-y) + 5;
+                    let P = point + j2;
+                    y--;
+                    x++;
+                    sol.innerHTML += "<tr><th scope='row'>" + i + "</th><td> ( " + x + " , " + y + " ) </td><td> ( " + (-1) *x + " , " + y + " ) </td><td> ( " + (-1) * x + " , " + (-1) * y + " ) </td><td> ( " + x + " , " + (-1) *y + " ) </td><td><input type='hidden' id='p" + i + "' value='" + P + "'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='P" + (i - 1) + " - 2 * (x+y) + 1 &#8757; P" + (i - 1) + " >= 0'>" + P + "</button></td></tr>";
+                    sol2.innerHTML += "<tr><th scope='row'>" + i + "</th><td> ( " + y + " , " + x + " ) </td><td> ( " + (-1) *y + " , " + x + " ) </td><td> ( " + (-1) * y + " , " + (-1) * x + " ) </td><td> ( " + y + " , " + (-1) *x + " ) </td><td><input type='hidden' id='p" + i + "' value='" + P + "'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='P" + (i - 1) + " - 2 * (x+y) + 1 &#8757; P" + (i - 1) + " >= 0'>" + P + "</button></td></tr>";
+                }
+                if (x >= y) {
+                    document.getElementById("Calculations").innerHTML = "<div class='col-md-2'>Number Of Steps <br> <span style='color:#0000ff;'>" + i + "</span></div>";
+                    break;
+                }
+            }
+
+            document.getElementById("Calculations").innerHTML += '<div class="col-md-4"><button type="button" id="pop" class="btn btn-dark">Learn About Octants ? </button></div>';
+            
+            $("#pop").on( "click", function() {
+                $("#popUp").addClass("w3-container w3-center w3-animate-zoom");
+                $("#popUp").show();
+                $("#pop").hide();   
+            });
+            $('[data-toggle="tooltip"]').tooltip();
+            $("#butt").click(function(){
+                $("#popUp").hide();
+            });
+        }
+    </script>
+</body>
+
+</html>

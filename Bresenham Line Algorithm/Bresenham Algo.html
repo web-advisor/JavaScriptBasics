@@ -1,0 +1,194 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <style type="text/css">
+        .container {
+            margin-top: 20px;
+        }
+
+        #Calculations {
+            font-weight: 900;
+        }
+        #solution {
+            display: none;
+        }
+    </style>
+    <title>Bresenham's Algo</title>
+      <!-- Including jQuery and jQuery UI -->
+      <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  
+      <!-- If javaScript fails -->
+      <noscript>Your Browser doesn't support javaScript or it has blocked the javaScript.</noscript>
+  
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="display-4">BresenHam's Line Drawing Algorithm</h1>
+    </div>
+    <div class="container">
+        <form method="get">
+            <p style="font-size:125%;font-weight: 700;"> Enter the Starting Pixel Coordiante of the Line :
+                (x<sub>0</sub>,y<sub>0</sub>) (
+                <input type="number" min="0" id="x0" width="10px">
+                <input type="number" min="0" id="y0" width="10px">
+                )
+            </p>
+
+            <p style="font-size:125%;font-weight: 700;"> Enter the Ending Pixel Coordiante of the Line :
+                (x<sub>1</sub>,y<sub>1</sub>)&nbsp;&nbsp; (
+                <input type="number" min="0" id="x1" width="10px">
+                <input type="number" min="0" id="y1" width="10px">
+                )
+            </p>
+
+            <input type="button" id="submit" value="Submit" class="btn btn-primary">
+
+        </form>
+    </div>
+    <div class="container">
+        <div class="row" id="Calculations">
+        </div>
+    </div>
+
+
+    <div class="container" id="solution">
+        <table class="table table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Iteration</th>
+                    <th scope="col">P</th>
+                    <th scope="col">P(X)</th>
+                    <th scope="col">P(Y)</th>
+                </tr>
+            </thead>
+            <tbody id="sol">
+
+            </tbody>
+        </table>
+        <button id="reload" class="btn btn-primary" style="margin-bottom:20px;"> Check Another ? </button>
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+        document.getElementById("submit").onclick = function () {
+            let x0 = document.getElementById("x0").value;
+            let x1 = document.getElementById("x1").value;
+            let y0 = document.getElementById("y0").value;
+            let y1 = document.getElementById("y1").value;
+
+            let dx = x1 - x0;
+            let dy = y1 - y0;
+            document.getElementById("Calculations").innerHTML = "<div class='col-md-2'> Change in X <br> <span style='color:#0000ff;'>" + dx + "</span></div>";
+            document.getElementById("Calculations").innerHTML += "<div class='col-md-2'>Change in Y <br> <span style='color:#0000ff;'>" + dy + "</span></div>";
+            let steps = Math.abs((Math.abs(dx) > Math.abs(dy)) ? dx : dy);
+            document.getElementById("Calculations").innerHTML += "<div class='col-md-2'>Number Of Steps <br> <span style='color:#0000ff;'>" + steps + "</span></div>";
+            
+            let solution = document.getElementById("solution");
+            let sol = document.getElementById("sol");
+
+            x0=parseInt(x0);
+            y0=parseInt(y0);
+
+            
+            solution.style.display = 'block';
+            
+            
+            if(Math.abs(dx) > Math.abs(dy)){
+                if(dx>0){
+                    x0;
+                }else{
+                    x0=x1;
+                    dx=Math.abs(dx);
+                }
+                
+                if(dy<0){
+                    y0=y1;
+                    dy=Math.abs(dy);
+                }else{
+                    y0;
+                }    
+                
+                let p0=(2*dy)-dx;
+                let j1=2*dy;
+                let j2=2*(dy-dx);
+                sol.innerHTML = "<tr><th scope='row'>" + 0 + "</th><td><input type='hidden' id='p0' value='" + p0+ "'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='(2*dy)-dx'>"+p0+"</button></td><td>" + x0 + "</td><td>" + y0 + "</td></tr>";
+                
+                for (var i = 1; i <= steps; i++) {
+                    x0++;
+                    let point=Number(document.getElementById("p"+(i-1)).value);
+                    let P1=point+j1;
+                    let P2=point+j2;
+                    if(parseInt(point)<0){
+                        sol.innerHTML += "<tr><th scope='row'>" + i + "</th><td><input type='hidden' id='p"+ i +"' value='"+ P1 +"'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='P"+(i-1)+" + (2*dy) &#8757; P"+(i-1)+" < 0'>" + P1 + "</button></td><td>" + x0 + "</td><td>" + y0 + "</td></tr>";
+                    }else{
+                        y0++;
+                        sol.innerHTML += "<tr><th scope='row'>" + i + "</th><td><input type='hidden' id='p"+ i +"' value='"+ P2+"'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='P"+(i-1)+" + 2*(dy-dx) &#8757; P"+(i-1)+" > 0'>" + P2 + "</button></td><td>" + x0 + "</td><td>" + y0 + "</td></tr>"; 
+                    }
+                }
+            }else{
+                if(dx>0){
+                    x0;
+                }else{
+                    x0=x1;
+                    dx=Math.abs(dx);
+                }
+                
+                if(dy<0){
+                    y0=y1;
+                    dy=Math.abs(dy);
+                }else{
+                    y0;
+                }  
+                let p0=2*(dx)-dy;
+                let j1=2*dx;
+                let j2=2*(dx-dy);
+                sol.innerHTML = "<tr><th scope='row'>" + 0 + "</th><td><input type='hidden' id='p0' value='" + p0+ "'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='(2*dx)-dy'>"+ p0+"</td><td>" + x0 + "</button></td><td>" + y0 + "</td></tr>";
+                for (var i = 1; i <= steps; i++) {
+                    if(dy>0){
+                        y0++;
+                    }else{
+                        y0--;
+                    }
+                    let point=Number(document.getElementById("p"+(i-1)).value);
+                    let P1=point+j1;
+                    let P2=point+j2;    
+                    if(parseInt(point)<0){
+                        sol.innerHTML += "<tr><th scope='row'>" + i + "</th><td><input type='hidden' id='p"+ i +"' value='"+ P1 +"'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='P"+(i-1)+" + 2*(dx) &#8757; P"+(i-1)+" < 0'>" + P1+ "</button></td><td>" + x0 + "</td><td>" + y0 + "</td></tr>";
+                    }else{
+                        x0++;
+                        sol.innerHTML += "<tr><th scope='row'>" + i + "</th><td><input type='hidden' id='p"+ i +"' value='"+ P2 +"'><button type='button' class='btn' style='border:none;' data-toggle='tooltip' data-placement='bottom' title='P"+(i-1)+" + 2*(dx-dy) &#8757; P"+(i-1)+" < 0'>" + P2 + "</button></td><td>" + x0 + "</td><td>" + y0 + "</td></tr>"; 
+                    }
+                }
+            }
+            
+            document.getElementById("reload").onclick=function(){
+                window.location.reload();
+            }
+            $('[data-toggle="tooltip"]').tooltip();
+
+        }
+    </script>
+</body>
+
+</html>

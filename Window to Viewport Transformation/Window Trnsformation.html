@@ -1,0 +1,149 @@
+
+<!doctype html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+    <style type="text/css">
+        .container {
+            margin-top: 20px;
+        }
+
+        #Calculations {
+            font-weight: 900;
+        }
+
+        #solution {
+            display: none;
+        }
+    </style>
+    <title>Window Transformation</title>
+</head>
+
+<body>
+    <div class="container">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item"><a href="http://amarsinharanjan-com.stackstaging.com/content/3%20JAVASCRIPT/Computer%20Graphics.html">Home</a></li>
+              <li class="breadcrumb-item active" aria-current="page">Window Transformation</li>
+            </ol>
+          </nav>
+    </div>
+    <div class="container">
+        <h1 class="display-3">Window Transformation</h1>
+    </div>
+    <div class="container">
+        <form method="get">
+            <div class="row">
+                <div class="col-md-6">
+                    <p style="font-size:125%;font-weight: 700;"> Enter the Window Coordinates : </p>
+                    <p style="font-size:125%;font-weight: 700;"> (Xw<sub>min</sub>) =  
+                        <input type="number" min="0" id="Xwmin" width="10px">
+                    </p>
+                    <p style="font-size:125%;font-weight: 700;"> (Yw<sub>min</sub>) =  
+                        <input type="number" min="0" id="Ywmin" width="10px">
+                    </p>
+                    <p style="font-size:125%;font-weight: 700;"> (Xw<sub>max</sub>) =  
+                        <input type="number" min="0" id="Xwmax" width="10px">
+                    </p>
+                    <p style="font-size:125%;font-weight: 700;"> (Yw<sub>max</sub>) =  
+                        <input type="number" min="0" id="Ywmax" width="10px">
+                    </p>
+                    <p style="font-size:125%;font-weight: 700;"> Enter the Window Point Coordiantes :                        (x<sub>w</sub>,y<sub>w</sub>)&nbsp;&nbsp; (
+                        <input type="number" min="0" id="Xw" width="10px">
+                        <input type="number" min="0" id="Yw" width="10px">
+                        )
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <p style="font-size:125%;font-weight: 700;"> Enter the Viewport Coordinates : </p>
+                    <p style="font-size:125%;font-weight: 700;"> (Xv<sub>min</sub>) =  
+                        <input type="number" min="0" id="Xvmin" width="10px">
+                    </p>
+                    <p style="font-size:125%;font-weight: 700;"> (Yv<sub>min</sub>) =  
+                        <input type="number" min="0" id="Yvmin" width="10px">
+                    </p>
+                    <p style="font-size:125%;font-weight: 700;"> (Xv<sub>max</sub>) =  
+                        <input type="number" min="0" id="Xvmax" width="10px">
+                    </p>
+                    <p style="font-size:125%;font-weight: 700;"> (Yv<sub>max</sub>) =  
+                        <input type="number" min="0" id="Yvmax" width="10px">
+                    </p>
+                </div>
+            </div>
+
+            <input type="button" id="submit" value="Submit" class="btn btn-primary">
+
+        </form>
+    </div>
+    <div class="container">
+        <div class="row" id="Calculations">
+        </div>
+    </div>
+
+
+    <div class="container" id="solution">
+        <!-- <button id="reload" class="btn btn-primary"> Clear ? </button> -->
+    </div>
+    
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+        integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+
+        document.getElementById("submit").onclick = function () {
+            let Xwmin = document.getElementById("Xwmin").value;
+            let Ywmin = document.getElementById("Ywmin").value;
+            let Xwmax = document.getElementById("Xwmax").value;
+            let Ywmax = document.getElementById("Ywmax").value;
+            let Xw = document.getElementById("Xw").value;
+            let Yw = document.getElementById("Yw").value;
+            let Xvmin = document.getElementById("Xvmin").value;
+            let Yvmin = document.getElementById("Yvmin").value;
+            let Xvmax = document.getElementById("Xvmax").value;
+            let Yvmax = document.getElementById("Yvmax").value;
+            
+            let dxv = Xvmax - Xvmin;
+            let dxw = Xwmax - Xwmin;
+            let dyv = Yvmax - Yvmin;
+            let dyw = Ywmax - Ywmin;
+            let Sx = dxv/dxw;
+            let Sy = dyv/dyw;            
+            let Xv = Number(Xvmin) + Number(Sx)*(Number(Xw)-Number(Xwmin));
+            let Yv = Number(Yvmin) + Number(Sy)*(Number(Yw)-Number(Ywmin));
+
+            let Calculations=document.getElementById("Calculations");
+            Calculations.innerHTML = "<div class='col-md-2'>Window Width<br> <span style='color:#0000ff;'>" + Math.abs(dxw) + "</span></div>";
+            Calculations.innerHTML += "<div class='col-md-2'>Window Height<br> <span style='color:#0000ff;'>" + Math.abs(dyw) + "</span></div>";
+            Calculations.innerHTML += "<div class='col-md-2'>Viewport Width<br> <span style='color:#0000ff;'>" + Math.abs(dxv) + "</span></div>";
+            Calculations.innerHTML += "<div class='col-md-2'>Viewport Height<br> <span style='color:#0000ff;'>" + Math.abs(dyv) + "</span></div>";
+            Calculations.innerHTML += "<div class='col-md-2'>Change in Width<br><span style='color:#0000ff;'>" + Math.abs(Sx) + "</span></div>";
+            Calculations.innerHTML += "<div class='col-md-2'>Change in Height<br> <span style='color:#0000ff;'>" + Math.abs(Sy) + "</span></div>";
+
+            let solution = document.getElementById("solution");         
+            solution.style.display = 'block';
+            solution.innerHTML = "<div class='container'> <p style='font-size:125%;font-weight: 700;'> New Viewport Point Coordiantes : (x<sub>v</sub>,y<sub>v</sub>)&nbsp;&nbsp; ( <span style='color:#0000ff;'>" + Xv + " , " + Yv + "</span> ) </p></div>";
+            
+            // document.getElementById("reload").onclick=function(){
+                // window.location.reload();
+            // }
+
+        }
+    </script>
+</body>
+
+</html>

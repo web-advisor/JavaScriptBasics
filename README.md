@@ -1,4 +1,4 @@
-# What is this Repost ?
+# What is this Repo ?
     This Repo consists of various algorithms Solved in javaScript in the latest ES6+ syntax .
 # About the Author :
 * Hi , my name is **Amar Sinha**.
